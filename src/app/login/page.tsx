@@ -2,8 +2,8 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { axios } from "axios";
-import toast from "react-hot-toast";
+import axios from "axios";
+import {toast} from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,10 +18,10 @@ export default function LoginPage() {
   const onLogin = async () => {
     try {
       setLoading(true);
-      const response = axios.post("/api/users/login", user);
+      const response = await axios.post("/api/users/login", user);
       console.log("Login success ", response.data);
-      toast.success('Login success')
-      router.push('/profile')
+      toast.success("Login success");
+      router.push("/profile");
     } catch (error: any) {
       console.log("Login failed ", error.message);
       toast.error(error.message);
@@ -40,12 +40,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>Login</h1>
+      <h1>{loading ? "Processing" : "Login"}</h1>
       <hr />
 
       <label htmlFor="email">email</label>
       <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
         type="email"
         id="email"
         value={user.email}
@@ -54,7 +54,7 @@ export default function LoginPage() {
       />
       <label htmlFor="password">password</label>
       <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
         type="password"
         id="password"
         value={user.password}
@@ -65,7 +65,7 @@ export default function LoginPage() {
         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
         onClick={onLogin}
       >
-        Login
+        {buttonDisabled ? "No Login" : "Login"}
       </button>
       <Link href="/signup">Visit Signup page</Link>
     </div>
