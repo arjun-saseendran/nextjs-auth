@@ -19,7 +19,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       });
     }
 
-    const transporter = nodemailer.createTransport({
+    const transport = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
       secure: false, // true for port 465, false for other ports
@@ -40,7 +40,11 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
         emailType === "VERIFY" ? "verify your email" : "reset your password"
       }</p>`,
     };
+    const mailResponse = await transport.sendMail(mailOptions);
+    return mailResponse
   } catch (error: any) {
     throw new Error(error.message);
   }
+
+  
 };
